@@ -65,7 +65,7 @@ def ingest(request):
 
         # Nom de fichier
         fname = f"openmeteo_{ts}.csv"
-        gcs_path = f"raw/{date_path}/{fname}"
+        gcs_path = f"raw/{fname}"
 
         # Upload vers GCS
         storage_client = storage.Client()
