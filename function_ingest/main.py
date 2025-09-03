@@ -15,16 +15,12 @@ SOURCE_URL = os.environ.get("SOURCE_URL")
 
 
 def openmeteo_to_csv(payload: bytes) -> bytes:
-    """
-    Convertit la réponse JSON Open-Meteo (Air Quality) en CSV tabulaire.
-    Colonnes dynamiques selon les champs 'hourly' retournés.
-    """
     obj = json.loads(payload)
     hourly = obj.get("hourly", {})
     times = hourly.get("time", [])
 
-    # Toutes les clés horaires sauf 'time'
-    fields = [k for k in hourly.keys() if k != "time"]
+    # Colonnes fixes voulues
+    fields = ["pm2_5", "pm10"]
 
     out = io.StringIO()
     writer = csv.writer(out, lineterminator="\n")
@@ -38,6 +34,7 @@ def openmeteo_to_csv(payload: bytes) -> bytes:
         writer.writerow(row)
 
     return out.getvalue().encode("utf-8")
+
 
 
 def ingest(request):
